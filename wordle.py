@@ -1,6 +1,3 @@
-# Buggy and incomplete
-# But still works 40% of the time, somehow
-
 import random
 
 commonLetters = ["cbtpaf", "aoreiluh", "aioeurn", "ensalircto", "eytrlhnd"]
@@ -51,12 +48,12 @@ class Wordle:
                 elif not letterIndex in self.confirmedLetters[guessedLetter]["indexes"]:
                     self.confirmedLetters[guessedLetter]["indexes"].append(letterIndex)
     def nextGuess(self):
-        self.decide()
+        self.updatePossibleWords()
         if self.guessNumber == 0:
             return "crane"
         else:
             return self.possibleWords[random.randint(0, len(self.possibleWords) - 1)]
-    def decide(self):
+    def updatePossibleWords(self):
         self.possibleWords = []
         for word in dictionary:
             possibility = True
@@ -76,14 +73,14 @@ class Wordle:
         return possibilities == 1 and self.possibleWords[0] == word
 
 correct = 0
-tests = 1000
+tests = 5000
 for i in range(tests):
     word = dictionary[random.randint(0, len(dictionary) - 1)]
     wordle = Wordle()
     for j in range(5):
         guess = wordle.nextGuess()
         wordle.check(guess, check(guess, word))
-    wordle.decide()
+    wordle.updatePossibleWords()
     if wordle.isCorrect(word):
         correct += 1
 
